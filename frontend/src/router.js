@@ -34,7 +34,6 @@ const router = new Router({
         store
           .dispatch("event/fetchEvent", routeTo.params.id)
           .then(event => {
-            console.log(event);
             routeTo.params.event = event;
             next();
           })

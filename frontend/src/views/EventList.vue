@@ -1,18 +1,33 @@
 <template>
   <div class="pt-3">
-    <h1 class="text-xs-center">Events for <em>{{ user.user.name }}</em></h1>
-    <EventCard v-for="event in event.events" :key="event.id" :event="event" />
-    <template v-if="page != 1">
-      <router-link :to="{ name: 'event-list', query: { page: page - 1 } }" rel="prev">Prev Page</router-link>
-      <template v-if="hasNextPage"> | </template>
-    </template>
-    <v-btn
-      outlined
-      fab
-      class="event-pagination" 
-      color="success"
-    ><router-link v-if="hasNextPage" class="event-pagination-links" :to="{ name: 'event-list', query: { page: page + 1 } }" rel="next"><v-icon>arrow_forward</v-icon></router-link>
-    </v-btn>
+    <h1 class="text-xs-center event-title">Events for <em>{{ user.user.name }}</em></h1>
+    <EventCard v-for="event in event.events" :key="event.id" :event="event" :user="user" />
+    <v-tooltip bottom>
+      <template v-if="page != 1" v-slot:activator="{ on }">
+        <v-btn
+          v-if="page !== 1"
+          fab
+          small
+          class="event-pagination" 
+          color="success float-left"
+          v-on="on"><router-link class="event-pagination-links" :to="{ name: 'event-list', query: { page: page - 1 } }" rel="prev"><v-icon>arrow_back</v-icon></router-link></v-btn>
+        <template v-if="hasNextPage"> | </template>
+      </template>
+      <span>Previous Page</span>
+    </v-tooltip>
+    <v-tooltip bottom>
+      <template v-slot:activator="{ on }">
+        <v-btn
+          v-if="hasNextPage"
+          fab
+          small
+          class="event-pagination" 
+          color="success float-right"
+          v-on="on"
+        ><router-link v-if="hasNextPage" class="event-pagination-links" :to="{ name: 'event-list', query: { page: page + 1 } }" rel="next"><v-icon>arrow_forward</v-icon></router-link></v-btn>
+      </template>
+      <span>Next Page</span>
+    </v-tooltip>
   </div>
 </template>4
 
@@ -20,6 +35,7 @@
   import { mapState } from 'vuex';
   import store from "@/store/store.js";
   import EventCard from "@/components/EventCard.vue";
+  import { filter } from 'lodash';
 
   function getPageEvents(routeTo, next) {
     const currentPage = parseInt(routeTo.query.page) || 1
@@ -39,29 +55,36 @@
         required: true
       }
     },
-    components: {
-      EventCard
-    },
     beforeRouteEnter(routeTo, routeFrom, next) {
       getPageEvents(routeTo, next)
     },
     beforeRouteUpdate(routeTo, routeFrom, next) {
         getPageEvents(routeTo, next)
     },
-    created() {
-      this.$store.dispatch('user/fetchUser');
-      // console.log(this.event);
-      this.$store.dispatch('event/fetchEvents', {
-        perPage: this.perPage,
-        page: this.page
-      })
+    components: {
+      EventCard
+    },
+    async created() {      
+      await this.$store.dispatch('user/fetchUser');
+
+      await this.$store.dispatch('event/fetchEvents', {
+        page: this.page,
+      });
     },
     computed: {
       hasNextPage() {
-        console.log(this.event.eventsTotal, this.page, this.event.perPage);
         return this.event.eventsTotal > this.page * this.event.perPage;
       },
+      loggedUser() {
+        return this.user.user.id;
+      },
       ...mapState(['event', 'user'])
+    }, 
+    data() {
+      return {
+        fetchedEvents: {},
+        userEvents: ''
+      }
     }
   }
 </script>
@@ -76,6 +99,10 @@
   .event-pagination-links {
     text-decoration: none;
     color: white;
+  }
+  .event-title {
+    color: #00897B;
+    font-family: "Comic Sans MS", cursive, sans-serif;
   }
 </style>
 

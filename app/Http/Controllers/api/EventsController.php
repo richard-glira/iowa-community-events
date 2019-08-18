@@ -8,9 +8,13 @@
 
 namespace App\Http\Controllers\api;
 
+use App\User;
 use App\Events;
+use App\EventAttendees;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Model;
+
 
 /**
  * Class ItemController
@@ -84,6 +88,18 @@ class EventsController extends APIController {
                     if ($event->save()) {
                         $status = 202;
                         $created = true;
+
+                        $attendees = new EventAttendees([
+                            'event_id' => $event->id,
+                            'user_id' => $userId
+                        ]);
+
+                        if ($attendees->save()) {
+                            $status = 202;
+                            $created = true;
+                        } else {
+                            $errors[] = 'Failed to create attendee!';
+                        }
                     } else {
                         $errors[] = 'Failed to create event!';
                     }
@@ -96,6 +112,7 @@ class EventsController extends APIController {
         return $this->apiResponse([
             'created' => $created,
             'event' => is_array($event) ? $event : $event->toArray(),
+            'attendees' => is_array($attendees) ? $attendees : $attendees->toArray(),
             'errors' => $errors
         ], $status, $this->generateStatusMessage($status));
     }
@@ -109,13 +126,13 @@ class EventsController extends APIController {
      * @return \Illuminate\Http\JsonResponse
      */
     public function get(Request $request) {
-        $limit = $request->has('_limit') ? $request->input('_limit') : 4;
-        $page = $request->has('_page') ? $request->input('_page') : 1;
+        $limit = $request->has('limit') ? $request->input('limit') : 4;
+        $page = $request->has('page') ? $request->input('page') : 1;
 
-        $events = Events::paginate($limit);
+        $events = Events::with(['attendees'])->paginate($limit);
 
         return $this->apiResponse([
-            'events' => $events->toArray()
+            'events' => $events
         ], (isset($events) ? 200 : 404));
     }
 

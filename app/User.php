@@ -12,4 +12,8 @@ class User extends Model {
     protected $table = 'users';
 
     protected $guarded = [];
+
+    public function events() {
+        return $this->hasOne('App\Events', 'user_id', 'id');
+    }
 }

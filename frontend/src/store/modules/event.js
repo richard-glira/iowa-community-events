@@ -5,6 +5,7 @@ export const namespaced = true;
 export const state = {
   events: [],
   eventsTotal: 0,
+  eventsDisplayed: 0,
   event: {},
   perPage: 4
 };
@@ -13,14 +14,23 @@ export const mutations = {
   ADD_EVENT(state, event) {
     state.events.push(event);
   },
+  ADD_EVENT_ATTENDEES(state, attendees) {
+    state.event.attendees.push(attendees);
+  },
   SET_EVENTS(state, events) {
     state.events = events;
   },
   SET_TOTAL_EVENTS(state, eventsTotal) {
     state.eventsTotal = eventsTotal;
   },
+  SET_TOTAL_EVENTS_DISPLAYED(state) {
+    state.eventsDisplayed += 1;
+  },
   SET_EVENT(state, event) {
     state.event = event;
+  },
+  UPDATE_TOTAL_EVENTS(state, eventsTotal) {
+    state.eventsTotal = eventsTotal;
   }
 };
 
@@ -29,10 +39,12 @@ export const actions = {
     return EventService.postEvent(event)
       .then(() => {
         commit("ADD_EVENT", event);
+
         const notification = {
           type: "success",
           message: "Your event has been created!"
         };
+
         dispatch("notification/add", notification, { root: true });
       })
       .catch(error => {
@@ -71,6 +83,29 @@ export const actions = {
           return response.data.payload.event;
         });
     }
+  },
+  setTotalEventsDisplayed({ commit }, increment) {
+    commit("SET_TOTAL_EVENTS_DISPLAYED", increment);
+  },
+  signUp({ commit, dispatch }, data) {
+    return EventService.eventSignUp(data)
+      .then(response => {
+        const notification = {
+          type: "success",
+          message: "Successfully signed up for event!"
+        };
+
+        commit("ADD_EVENT_ATTENDEES", response.data.payload.event);
+        dispatch("notification/add", notification, { root: true });
+      })
+      .catch(error => {
+        const notification = {
+          type: "error",
+          message: "There was a problem signing up for event: " + error.message
+        };
+        dispatch("notification/add", notification, { root: true });
+        throw error;
+      });
   }
 };
 

@@ -14,9 +14,14 @@
             <div class="text-xs-right">
                 <v-tooltip bottom>
                     <template v-slot:activator="{ on }">
-                        <v-btn rounded color="warning" v-on="on" to="/">
-                            <v-icon class="mr-1">event</v-icon>
-                            <span>Events</span>
+                        <v-btn 
+                            fab
+                            outline 
+                            color="warning" 
+                            v-on="on" 
+                            to="/"
+                        >
+                            <v-icon>event</v-icon>
                         </v-btn>                
                     </template>
                     <span>View all community events</span>
@@ -27,7 +32,13 @@
             <div class="text-xs-right pr-3">
                 <v-tooltip bottom>
                     <template v-slot:activator="{ on }">
-                        <v-btn fab small class="primary" v-on="on" to="/event/create">
+                        <v-btn 
+                            fab 
+                            outline
+                            class="primary"
+                            v-on="on" 
+                            to="/event/create"
+                         >
                             <v-icon>add</v-icon>
                         </v-btn>
                     </template>

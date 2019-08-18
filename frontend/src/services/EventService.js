@@ -10,6 +10,9 @@ const apiClient = axios.create({
 });
 
 export default {
+  eventSignUp(data) {
+    return apiClient.post("/api/v1/event/sign-up", data);
+  },
   getEvents(perPage, page) {
     return apiClient.get("/api/v1/events?page=" + page);
   },
@@ -17,10 +20,9 @@ export default {
     return apiClient.get("/api/v1/event/" + id);
   },
   postEvent(event) {
-    console.log(event);
     return apiClient.post("/api/v1/create", event);
   },
-  getUser(id = 1) {
+  getUser(id = 2) {
     return apiClient.get("/api/v1/user/" + id);
   }
 };

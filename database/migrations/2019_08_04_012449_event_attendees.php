@@ -16,6 +16,14 @@ class EventAttendees extends Migration {
             $table->integer('event_id');
             $table->integer('user_id');
             $table->timestamps();
+
+            $table->foreign('event_id')
+            ->references('id')
+            ->on('community_events');
+
+            $table->foreign('user_id')
+            ->references('id')
+            ->on('users');
         });
     }
 

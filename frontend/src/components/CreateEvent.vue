@@ -40,7 +40,7 @@
 
                     <v-text-field
                         label="Location *"
-                        prepend-icon="map"
+                        prepend-icon="place"
                         v-model="event.location"
                         :rules="[rules.required]"
                         required
@@ -95,18 +95,24 @@
                 <!-- <p v-if="$v.$anyError" class="errorMessage pt-3">Please fill out the required field(s).</p> -->
 
                 <v-btn 
-                    class="button -fill-gradient pl-2 ml-0 float-right"
+                    outline
+                    class="button cancel-create-button success pl-2 ml-0 float-right"
                     :disabled="!valid"
                     @click="createLocalEvent" 
                 >
-                    <v-icon class="mr-1" left>add_circle_outline</v-icon>Create
+                    <span class="font-success">
+                        <v-icon class="mr-1" left>add_circle_outline</v-icon>Create
+                    </span>
                 </v-btn>
                 
                 <v-btn 
-                    class="error pl-2 float-right"
+                    outline
+                    class="error cancel-create-button pl-2 float-right"
                     to="/"
                 >
-                    <v-icon class="mr-1">remove_circle_outline</v-icon>Cancel
+                    <span class="font-error">
+                        <v-icon class="mr-1">remove_circle_outline</v-icon>Cancel
+                    </span>
                 </v-btn>
             </v-flex>
         </v-layout>
@@ -229,11 +235,20 @@
 </script>
 
 <style scoped>
-    .errorMessage {
-        color: red;
-    }
     .button.-fill-gradient {
         background: linear-gradient(to right, #16c0b0, #84cf6a);
         color: #ffffff;
+    }
+    .cancel-create-button {
+        border-radius: 10%;
+    }
+    .errorMessage {
+        color: red;
+    }
+    .font-error {
+        color: red;
+    }
+    .font-success {
+        color: green;
     }
 </style>

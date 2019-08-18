@@ -20,6 +20,8 @@ use Illuminate\Http\Request;
 Route::group(['prefix' => 'v1/'], function() {
     Route::post('/create', 'api\EventsController@create');
 
+    Route::post('/event/sign-up', 'api\EventAttendeesController@eventSignUp');
+
     Route::get('/event/{eventId}', 'api\EventsController@getEventById');
 
     Route::get('/events', 'api\EventsController@get');

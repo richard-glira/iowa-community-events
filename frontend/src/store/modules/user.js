@@ -3,8 +3,8 @@ import EventService from "@/services/EventService.js";
 export const namespaced = true;
 
 export const actions = {
-  fetchUser({ commit }) {
-    return EventService.getUser().then(response => {
+  fetchUser({ commit }, userId = 1) {
+    return EventService.getUser(userId).then(response => {
       commit("SET_USER", response.data.payload.user);
     });
   }

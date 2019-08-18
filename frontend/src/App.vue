@@ -3,6 +3,7 @@
       <NavigationBar></NavigationBar>
       <v-app>
         <v-content>
+          <NotificationContainer />
           <router-view :key="$route.fullPath" />
         </v-content>
       </v-app>
@@ -11,11 +12,13 @@
 
 <script>
 import NavigationBar from "@/components/NavigationBar.vue"
+import NotificationContainer from "@/components/NotificationContainer.vue"
 
 export default {
   name: 'App',
   components: {
-    NavigationBar
+    NavigationBar,
+    NotificationContainer
   }
 }
 </script>
