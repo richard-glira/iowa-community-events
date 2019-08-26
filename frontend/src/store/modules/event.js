@@ -37,7 +37,9 @@ export const mutations = {
 export const actions = {
   createEvent({ commit, dispatch }, event) {
     return EventService.postEvent(event)
-      .then(() => {
+      .then(response => {
+        event.user_id = response.data.payload.event.user_id;
+        event.attendees.push(response.data.payload.attendees);
         commit("ADD_EVENT", event);
 
         const notification = {
@@ -56,8 +58,8 @@ export const actions = {
         throw error;
       });
   },
-  fetchEvents({ commit, dispatch, state }, { page }) {
-    return EventService.getEvents(state.perPage, page)
+  fetchEvents({ commit, dispatch, state }, { page, token }) {
+    return EventService.getEvents(state.perPage, page, token)
       .then(response => {
         commit("SET_EVENTS", response.data.payload.events.data);
         commit("SET_TOTAL_EVENTS", response.data.payload.events.total);
@@ -88,6 +90,8 @@ export const actions = {
     commit("SET_TOTAL_EVENTS_DISPLAYED", increment);
   },
   signUp({ commit, dispatch }, data) {
+    console.log(data);
+    debugger;
     return EventService.eventSignUp(data)
       .then(response => {
         const notification = {

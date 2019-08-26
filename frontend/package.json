@@ -15,6 +15,7 @@
     "core-js": "^2.6.5",
     "lodash": "^4.17.15",
     "nprogress": "^0.2.0",
+    "vee-validate": "^3.0.1",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3",
     "vuejs-datepicker": "^1.6.2",

@@ -91,26 +91,21 @@
                         <v-date-picker v-model="date" @input="menu = false"></v-date-picker>
                     </v-menu>
                 </v-form>
-
-                <!-- <p v-if="$v.$anyError" class="errorMessage pt-3">Please fill out the required field(s).</p> -->
-
                 <v-btn 
-                    outline
                     class="button cancel-create-button success pl-2 ml-0 float-right"
                     :disabled="!valid"
                     @click="createLocalEvent" 
                 >
-                    <span class="font-success">
+                    <span>
                         <v-icon class="mr-1" left>add_circle_outline</v-icon>Create
                     </span>
                 </v-btn>
                 
                 <v-btn 
-                    outline
                     class="error cancel-create-button pl-2 float-right"
                     to="/"
                 >
-                    <span class="font-error">
+                    <span>
                         <v-icon class="mr-1">remove_circle_outline</v-icon>Cancel
                     </span>
                 </v-btn>
@@ -131,16 +126,21 @@
             Datepicker
         },
         computed: {
-            ...mapState('user', ['user'])
+            ...mapState('user', ['token', 'user'])
+        },
+        created() {
+            console.log(this.event, this.token);
         },
         data() {
             const date = '',
                   dateFormatted = '',
                   menu = false,
+                  merridiem = 'am',
+                  timeIndex = 0,
                   times = []
 
             for (let i = 1; i <= 24; i++) {
-                times.push(i + ':00')
+                times.push(i + ':00');
             }
 
             return {
@@ -172,6 +172,7 @@
         methods: {
             createLocalEvent() {
                 NProgress.start();
+                this.event.token = this.token;
                 this.createEvent(this.event).then(() => {
                     this.$router.push({
                         name: 'event-show',
@@ -186,16 +187,16 @@
                 const user = this.$store.state.user.user;
 
                 return {
-                    id: id,
-                    category: '',
-                    organizer: user,
-                    title: '',
-                    description: '',
-                    location: '',
-                    date: this.dateFormatted,
-                    time: '',
                     attendees: [],
-                    email: ''
+                    category: '',
+                    date: this.dateFormatted,
+                    description: '',
+                    email: '',
+                    id: id,
+                    location: '',
+                    organizer: user,
+                    time: '',
+                    title: ''
                 }
             },
             formatDate(date) {

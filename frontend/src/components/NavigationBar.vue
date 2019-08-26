@@ -17,7 +17,9 @@
                         <v-btn 
                             fab
                             outline 
+                            small
                             color="warning" 
+                            v-if="isLoggedIn"
                             v-on="on" 
                             to="/"
                         >
@@ -26,23 +28,41 @@
                     </template>
                     <span>View all community events</span>
                 </v-tooltip>
-
             </div>
 
             <div class="text-xs-right pr-3">
                 <v-tooltip bottom>
                     <template v-slot:activator="{ on }">
                         <v-btn 
-                            fab 
                             outline
-                            class="primary"
-                            v-on="on" 
+                            class="button-round info"
+                            color="info"
+                            v-on="on"
+                            v-if="isLoggedIn" 
                             to="/event/create"
                          >
-                            <v-icon>add</v-icon>
+                            <v-icon>add</v-icon> Create
                         </v-btn>
                     </template>
                     <span>Add an event</span>
+                </v-tooltip>
+            </div>
+
+            <div class="text-xs-right pr-3">
+                <v-tooltip bottom>
+                    <template v-slot:activator="{ on }">
+                        <v-btn 
+                            outline
+                            class="button-round success"
+                            color="success"
+                            v-if="!isLoginScreen && !isLoggedIn"
+                            v-on="on" 
+                            to="/login"
+                         >
+                            <v-icon>lock</v-icon> Login
+                        </v-btn>
+                    </template>
+                    <span>Login</span>
                 </v-tooltip>
             </div>
         </v-toolbar>
@@ -60,7 +80,16 @@
 </template>
 
 <script>
+    import { mapState } from 'vuex';
+    import store from "@/store/store.js";
+
     export default {
+        computed: {
+            isLoginScreen() {
+                return this.$route.path === '/login';
+            },
+            ...mapState('user', ['isLoggedIn'])
+        },
         data() {
             return {
                 drawer: false
@@ -70,5 +99,9 @@
 </script>
 
 <style scoped>
-
+.button-round {
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}
 </style>

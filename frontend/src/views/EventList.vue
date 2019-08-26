@@ -32,7 +32,7 @@
 </template>4
 
 <script>
-  import { mapState } from 'vuex';
+  import { mapActions, mapState } from 'vuex';
   import store from "@/store/store.js";
   import EventCard from "@/components/EventCard.vue";
   import { filter } from 'lodash';
@@ -40,12 +40,8 @@
   function getPageEvents(routeTo, next) {
     const currentPage = parseInt(routeTo.query.page) || 1
 
-    store.dispatch('event/fetchEvents', {
-        page: currentPage
-    }).then(() => {
-        routeTo.params.page = currentPage; // Sends the currentPage into the component as a prop
-        next();
-    });
+    routeTo.params.page = currentPage; // Sends the currentPage into the component as a prop
+    next();
   }
 
   export default {
@@ -64,12 +60,19 @@
     components: {
       EventCard
     },
-    async created() {      
-      await this.$store.dispatch('user/fetchUser');
+    async created() {
+      if (!Object.entries(this.user.user).length) {
+        this.$router.push({
+            name: 'login',
+        });
+      } else {
+        this.userLoginStatus(true);
 
-      await this.$store.dispatch('event/fetchEvents', {
-        page: this.page,
-      });
+        await this.$store.dispatch('event/fetchEvents', {
+          page: this.page,
+          token: this.token
+        });
+      }
     },
     computed: {
       hasNextPage() {
@@ -78,13 +81,17 @@
       loggedUser() {
         return this.user.user.id;
       },
-      ...mapState(['event', 'user'])
+      ...mapState(['event', 'user']),
+      ...mapState('user', ['token'])
     }, 
     data() {
       return {
         fetchedEvents: {},
         userEvents: ''
       }
+    }, 
+    methods: {
+      ...mapActions('user', ['userLoginStatus'])
     }
   }
 </script>

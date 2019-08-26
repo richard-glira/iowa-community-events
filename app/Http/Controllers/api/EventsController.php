@@ -34,6 +34,7 @@ class EventsController extends APIController {
     public function create(Request $request) {
         $status = 400;
         $event = array();
+        $attendees = array();
         $errors = array();
         $created = false;
         $valid = true;

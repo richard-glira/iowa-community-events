@@ -25,7 +25,7 @@
             }
         },
         mounted() {
-            this.timeout = setTimeout(() => this.remove(this.notification), 100000)
+            this.timeout = setTimeout(() => this.remove(this.notification), 6000)
         },
         beforeDestroy() {
             clearTimeout(this.timeout)

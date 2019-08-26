@@ -1,14 +1,14 @@
 <template>
     <v-layout>
-        <v-flex x12>
-            <v-card>
+        <v-flex xs12>
+            <v-card class="mx-auto mt-5">
                 <v-container grid-list-md text-xs-center>
                     <v-layout row wrap>
                         <v-flex xs10>
                             <v-card-title class="px-3">
                                 <v-toolbar color="grey darken-2" dark>
                                     <v-toolbar-title class="title">
-                                        <v-tooltip bottom>
+                                        <v-tooltip top>
                                             <template v-slot:activator="{ on }">
                                                 <span v-on="on" class="event-info">
                                                     <v-icon>spa</v-icon> 
@@ -47,7 +47,10 @@
                                 <v-card-text class="px-0">
                                     <v-tooltip right>
                                         <template v-slot:activator="{ on }">
-                                            <span v-on="on" class="event-info"><v-icon>category</v-icon> {{ category }}</span><br>
+                                            <span v-on="on" class="event-info">
+                                                <v-icon class="mr-1">category</v-icon> <b>Category</b><br/> 
+                                                <span class="ml-4">{{ category }}</span>
+                                                </span>
                                         </template>
                                         <span>Category</span>
                                     </v-tooltip>
@@ -59,7 +62,10 @@
                                 <v-card-text class="px-0">
                                     <v-tooltip right>
                                         <template v-slot:activator="{ on }">
-                                            <span v-on="on" class="date-info event-info"><v-icon>access_alarm</v-icon> {{ time }} on {{ eventDate | date }}</span><br/> 
+                                            <span v-on="on" class="date-info event-info">
+                                                <v-icon>access_alarm</v-icon> Time<br/> 
+                                                <span class="ml-4">{{ time }} on {{ eventDate | date }}</span>
+                                            </span>
                                         </template>
                                         <span>Date & Time</span>
                                     </v-tooltip>
@@ -114,7 +120,7 @@
                         flat
                         color="success"
                         @click="eventSignUp"
-                        v-if="isUserRegistered"
+                        v-if="!isUserRegistered"
                     >
                         <v-icon>person_add</v-icon> Sign me up
                     </v-btn>
@@ -123,7 +129,7 @@
                             dark 
                             outline 
                             color="success"
-                            v-if="!isUserRegistered"
+                            v-if="isUserRegistered"
                         >
                             <v-icon class="font-success">done</v-icon> 
                             <span class="font-success">Registered for this event</span>
@@ -136,22 +142,40 @@
                     >
                         <v-icon>delete_forever</v-icon> Discard Event
                     </v-btn>
-                    <v-spacer></v-spacer>
-                    <v-tooltip left>
+                    <v-tooltip right>
                         <template v-slot:activator="{ on }">
                             <v-btn
                                 fab
+                                outline
                                 small
                                 class="warning float-right"
                                 v-if="isEventOrganizer"
                                 v-on="on"
                             >
-                                <v-icon>edit</v-icon>
+                                <v-icon color="warning">edit</v-icon>
                             </v-btn>
                         </template>
                         <span>Edit event</span>
                     </v-tooltip>
                 </v-card-actions>
+                <v-tooltip bottom>
+                    <template v-slot:activator="{ on }">
+                        <v-btn
+                            color="primary"
+                            dark
+                            small
+                            absolute
+                            bottom
+                            right
+                            fab
+                            to="/"
+                            v-on="on"
+                        >
+                            <v-icon>home</v-icon>
+                        </v-btn>
+                    </template>
+                    <span>Home</span>
+                </v-tooltip>
             </v-card> 
         </v-flex>
     </v-layout>
@@ -193,7 +217,7 @@ export default {
             return this.event.user_id !== this.user.id ? false : true;
         },
         isUserRegistered() {
-            return !filter(this.event.attendees, {'user_id': this.user.id}).length;
+            return filter(this.event.attendees, {'user_id': this.user.id}).length;
         },
         time() {
             return this.event.event_time ? this.event.event_time : this.event.time;
@@ -201,13 +225,17 @@ export default {
         title() {
             return this.event.event_name ? this.event.event_name : this.event.title;
         },
-        ...mapState('user', ['user'])
+        ...mapState('user', ['user', 'token'])
+    },
+    created() {
+        console.log(this.event.id); // R
     },
     methods: {
         eventSignUp() {
             const data = {
                 'event_id': this.event.id,
-                'user_id': this.user.id
+                'user_id': this.user.id,
+                'token': this.token
             };
 
             // We should be hiding the event sign up button if the signed in user is the event organizer or if the user is already signed up.  

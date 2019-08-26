@@ -3,8 +3,10 @@ import Router from "vue-router";
 import CreateEvent from "@/views/CreateEvent.vue";
 import EventList from "@/views/EventList.vue";
 import EventShow from "@/views/EventShow.vue";
+import Login from "@/views/Login.vue";
 import NetworkIssue from "@/views/NetworkIssue.vue";
 import NotFound from "@/views/NotFound.vue";
+import Register from "@/views/Register.vue";
 import NProgress from "nprogress";
 import store from "@/store/store";
 
@@ -19,6 +21,16 @@ const router = new Router({
       name: "event-list",
       component: EventList,
       props: true
+    },
+    {
+      path: "/login",
+      name: "login",
+      component: Login
+    },
+    {
+      path: "/register",
+      name: "register",
+      component: Register
     },
     {
       path: "/event/create",
