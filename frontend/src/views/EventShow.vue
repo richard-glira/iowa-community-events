@@ -139,10 +139,11 @@
                         flat 
                         color="error"
                         v-if="isEventOrganizer"
+                        @click="deleteEvent"
                     >
                         <v-icon>delete_forever</v-icon> Discard Event
                     </v-btn>
-                    <v-tooltip right>
+                    <!-- <v-tooltip right>
                         <template v-slot:activator="{ on }">
                             <v-btn
                                 fab
@@ -156,7 +157,7 @@
                             </v-btn>
                         </template>
                         <span>Edit event</span>
-                    </v-tooltip>
+                    </v-tooltip> -->
                 </v-card-actions>
                 <v-tooltip bottom>
                     <template v-slot:activator="{ on }">
@@ -227,10 +228,23 @@ export default {
         },
         ...mapState('user', ['user', 'token'])
     },
-    created() {
-        console.log(this.event.id); // R
-    },
     methods: {
+        async deleteEvent() {
+            const data = {
+                'id': this.event.id,
+                'token': this.token
+            };
+
+            NProgress.start();
+            await this.discardEvent(data).then(() => {
+                this.$router.push({
+                    name: 'event-list',
+                    params: { page: 1 }
+                })
+            }).then(() => {
+                NProgress.done();
+            });
+        },
         eventSignUp() {
             const data = {
                 'event_id': this.event.id,
@@ -246,7 +260,7 @@ export default {
                 NProgress.done();
             });
         },
-        ...mapActions('event', ['signUp']),
+        ...mapActions('event', ['discardEvent','signUp']),
         ...mapActions('user', ['fetchUser'])
     }
 }

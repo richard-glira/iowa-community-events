@@ -88,7 +88,7 @@
                                 persistent-hint
                             ></v-text-field>
                         </template>
-                        <v-date-picker v-model="date" @input="menu = false"></v-date-picker>
+                        <v-date-picker :min="currentDate" v-model="date" @input="menu = false"></v-date-picker>
                     </v-menu>
                 </v-form>
                 <v-btn 
@@ -126,10 +126,11 @@
             Datepicker
         },
         computed: {
+            currentDate() {
+                var date = new Date();
+                return date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-' + String(date.getDate()).padStart(2, '0');
+            },
             ...mapState('user', ['token', 'user'])
-        },
-        created() {
-            console.log(this.event, this.token);
         },
         data() {
             const date = '',

@@ -19,7 +19,8 @@ class EventAttendees extends Migration {
 
             $table->foreign('event_id')
             ->references('id')
-            ->on('community_events');
+            ->on('community_events')
+            ->onDelete('cascade');
 
             $table->foreign('user_id')
             ->references('id')

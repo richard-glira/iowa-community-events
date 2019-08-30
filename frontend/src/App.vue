@@ -2,9 +2,12 @@
     <div id="app">
       <NavigationBar></NavigationBar>
       <v-app>
-        <v-content>
+        <v-content fluid>
           <NotificationContainer />
           <router-view :key="$route.fullPath" />
+          <h5 class="text-xs-center justify-center"><em>Created by Richard Garcia-Lira</em></h5>
+          <h6 class="justify-center">Copyright @ 2019-{{ new Date().getFullYear() }}. All rights reserved</h6>
+          <h6><a href="https://github.com/richard-glira/iowa-community-events" target="_blank" class="source"><b>View Source Code</b></a></h6>
         </v-content>
       </v-app>
     </div>
@@ -247,6 +250,9 @@ select:focus::ms-value {
 }
 select::ms-expand {
   opacity: 0;
+}
+.source {
+  margin-left: 41%;
 }
 </style>
 

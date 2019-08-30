@@ -107,13 +107,14 @@
             userLogin() {
                 this.isLogging = true;
                 NProgress.start();
-                this.login(this.loginInformation).then(() => {
+                this.login(this.loginInformation).then(response => {
                     this.$router.push({
                         name: 'event-list',
                         params: { page: 1 }
                     });
-                }).catch(() => {
+                }).catch(error => {
                     NProgress.done();
+                    this.isLogging = false;
                 });
             },
             userLoginInstance() {

@@ -1,6 +1,7 @@
 <template>
   <div class="pt-3">
     <h1 class="text-xs-center event-title">Events for <em>{{ user.user.name }}</em></h1>
+    <h3 v-if="event.events.length === 0" class="text-xs-center no-events mt-4">There an no events listed, create one and start helping others today!</h3>
     <EventCard v-for="event in event.events" :key="event.id" :event="event" :user="user" />
     <v-tooltip bottom>
       <template v-if="page != 1" v-slot:activator="{ on }">
@@ -109,6 +110,9 @@
   }
   .event-title {
     color: #00897B;
+    font-family: "Comic Sans MS", cursive, sans-serif;
+  }
+  .no-events {
     font-family: "Comic Sans MS", cursive, sans-serif;
   }
 </style>

@@ -73,6 +73,7 @@
             <v-btn
                 color="success"
                 :disabled="!valid"
+                :loading="isLoading"
                 @click="register"
             >
                 <v-icon class="mr-1">person_add</v-icon> Register
@@ -95,6 +96,7 @@
             return {
                 fullName: '',
                 email: '',
+                isLoading: false,
                 lazy: false,
                 password: '',
                 passwordConfirmation: '',
@@ -130,12 +132,14 @@
         },
         methods: {
             register() {
+                this.isLoading = true;
                 NProgress.start();
                 this.userRegistration(this.registration).then(() => {
                     this.$router.push({
                         name: 'login'
                     });
                 }).catch(() => {
+                    this.isLoading = false;
                     NProgress.done();
                 });
             },

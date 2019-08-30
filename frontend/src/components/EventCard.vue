@@ -7,6 +7,7 @@
             <div>
               <span class="float-right">
                 <v-icon class="pt-1">people_outline</v-icon><span class="event-info mb-2"><b class="pl-1">{{ event.attendees.length }} attending</b></span>
+                <span v-if="isUserRegistered" class="user-signed-up"><b class="pl-2"><em>(Signed up)</em></b></span>
               </span>
             </div>
         </div>
@@ -15,6 +16,7 @@
 
 <script>
     import { mapActions } from 'vuex';
+    import { filter } from 'lodash';
     export default {
         props: {
             event: {
@@ -29,6 +31,9 @@
         computed: {
           isEventOrganizer() {
              return this.event.user_id !== this.user.user.id ? false : true;
+          },
+          isUserRegistered() {
+             return filter(this.event.attendees, { 'user_id': this.user.user.id }).length;
           }
         }
     }   
@@ -61,5 +66,8 @@
     }
     .font-color {
       color: #00c853!important;
+    }
+    .user-signed-up {
+      color: #EF6C00;
     }
 </style>

@@ -34,6 +34,11 @@ export default {
   login(user) {
     return apiClient.post("/api/login", user);
   },
+  logout(user) {
+    return apiClient.post("/api/v1/logout", user, {
+      headers: { Authorization: "Bearer " + user.token }
+    });
+  },
   postEvent(event) {
     return apiClient.post("/api/v1/create", event, {
       headers: { Authorization: "Bearer " + event.token }

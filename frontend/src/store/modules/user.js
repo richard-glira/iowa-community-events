@@ -8,12 +8,45 @@ export const actions = {
       commit("SET_USER", response.data.payload.user);
     });
   },
-  login({ commit }, user) {
-    return EventService.login(user).then(response => {
-      commit("SET_USER", response.data.payload.user);
-      commit("SET_AUTH_TOKEN", response.data.payload.token);
-      commit("SET_USER_LOGIN_STATUS", true);
-    });
+  login({ commit, dispatch }, user) {
+    return EventService.login(user)
+      .then(response => {
+        commit("SET_USER", response.data.payload.user);
+        commit("SET_AUTH_TOKEN", response.data.payload.token);
+        commit("SET_USER_LOGIN_STATUS", true);
+      })
+      .catch(error => {
+        const notification = {
+          type: "error",
+          message: "Invalid Credentials"
+        };
+
+        dispatch("notification/add", notification, { root: true });
+        throw error;
+      });
+  },
+  logout({ commit, dispatch }, user) {
+    return EventService.logout(user)
+      .then(() => {
+        const notification = {
+          type: "success",
+          message: "Successfully logged out!"
+        };
+
+        dispatch("notification/add", notification, { root: true });
+        commit("CLEAR_AUTH_TOKEN");
+        commit("CLEAR_USER");
+        commit("SET_USER_LOGIN_STATUS", false);
+      })
+      .catch(error => {
+        const notification = {
+          type: "error",
+          message: "Error logging out, email richardlr23@gmail.com for support."
+        };
+
+        dispatch("notification/add", notification, { root: true });
+        throw error;
+      });
   },
   userLoginStatus({ commit }, status) {
     commit("SET_USER_LOGIN_STATUS", status);
@@ -26,6 +59,12 @@ export const actions = {
 };
 
 export const mutations = {
+  CLEAR_AUTH_TOKEN(state) {
+    state.token = "";
+  },
+  CLEAR_USER() {
+    state.user = {};
+  },
   SET_AUTH_TOKEN(state, token) {
     state.token = token;
   },

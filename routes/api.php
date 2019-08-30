@@ -20,22 +20,22 @@ Route::group(['middleware' => ['json.response']], function () {
         });
 
         Route::group(['prefix' => 'v1/'], function() {
-            Route::middleware('auth:api')->group(function () {
-                Route::get('/logout', 'api\AuthController@logout')->name('logout');
-            });
-            
             Route::post('/create', 'api\EventsController@create');
             
             Route::post('/event/sign-up', 'api\EventAttendeesController@eventSignUp');
             
             Route::get('/event/{eventId}', 'api\EventsController@getEventById');
             
+            Route::get('/event/{eventId}/delete', 'api\EventsController@delete');
+            
             Route::get('/events', 'api\EventsController@get');
             
             Route::get('/user/{id}', 'api\UsersController@fetchUserInfo');
+
+            Route::post('/logout', 'api\AuthController@logout')->name('register.api');
         });
     });
-    
+
     Route::post('/register', 'api\AuthController@register')->name('register.api');
 
     Route::post('/login', 'api\AuthController@login')->name('login.api');

@@ -38,6 +38,7 @@ export const actions = {
   createEvent({ commit, dispatch }, event) {
     return EventService.postEvent(event)
       .then(response => {
+        event.id = response.data.payload.event.id;
         event.user_id = response.data.payload.event.user_id;
         event.attendees.push(response.data.payload.attendees);
         commit("ADD_EVENT", event);
@@ -54,6 +55,27 @@ export const actions = {
           type: "error",
           message: "There was a problem creating your event: " + error.message
         };
+        dispatch("notification/add", notification, { root: true });
+        throw error;
+      });
+  },
+  discardEvent({ dispatch }, data) {
+    return EventService.deleteEvent(data)
+      .then(response => {
+        console.log(response);
+        const notification = {
+          type: "success",
+          message: "Successfully deleted event!"
+        };
+
+        dispatch("notification/add", notification, { root: true });
+      })
+      .catch(error => {
+        const notification = {
+          type: "error",
+          message: "Failed to delete event!"
+        };
+
         dispatch("notification/add", notification, { root: true });
         throw error;
       });
@@ -90,8 +112,6 @@ export const actions = {
     commit("SET_TOTAL_EVENTS_DISPLAYED", increment);
   },
   signUp({ commit, dispatch }, data) {
-    console.log(data);
-    debugger;
     return EventService.eventSignUp(data)
       .then(response => {
         const notification = {

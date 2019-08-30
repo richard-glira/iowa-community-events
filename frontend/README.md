@@ -1,4 +1,4 @@
-# frontend
+# Iowa Community Events Frontend
 
 ## Project setup
 ```
