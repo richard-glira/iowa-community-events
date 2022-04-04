@@ -9,6 +9,8 @@ composer install
 ```
 ### Set up frontend
 
+- Cd into the `frontend/` directory and run the following commands
+
 ```bash
 npm install
 
