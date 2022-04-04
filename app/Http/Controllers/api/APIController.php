@@ -27,12 +27,12 @@ class APIController extends Controller {
      * @return JsonResponse
      */
     public function generateUserAPIToken(Request $request) {
-        $username = $request->header('IMT-Projects-Username');
+        $username = $request->header('Projects-Username');
         if (!isset($username)) {
             $username = $request->input('username');
         }
 
-        $authKey = $request->header('IMT-Projects-Auth-Key');
+        $authKey = $request->header('Projects-Auth-Key');
         if (!isset($authKey)) {
             $authKey = $request->input('projects-auth-key');
         }
@@ -355,12 +355,12 @@ class APIController extends Controller {
     }
 
     /**
-     * Call IMTOnline Model Data Endpoint and returns DB data.
+     * Call Online Model Data Endpoint and returns DB data.
      *
      * @param array $data
      * @return array|mixed
      */
-    public function getModelDataFromIMTOnline($data = array()) {
+    public function getModelDataFromMeta($data = array()) {
         $token = array_key_exists('script_token', $data) ? $data['script_token'] : null;
         $system = array_key_exists('for_system', $data) ? $data['for_system'] : null;
         $protocal = 'https://';
@@ -474,7 +474,7 @@ class APIController extends Controller {
 
             $apiURL = $protocal . $subdomain . $domain . $api;
 
-            $parameters['origin'] = 'IMT_PROJECTS';
+            $parameters['origin'] = 'META_PROJECTS';
 
             $parameters['script_token'] = 'Fdst4$oh^jafja*nnn820ps31';
 
