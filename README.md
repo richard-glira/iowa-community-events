@@ -1,4 +1,4 @@
-# Iowa Community Events Sample Project
+# Iowa Community Events Keystone Project - Richard Garcia
 
 Laravel/Vue SPA web application to create community events
 
