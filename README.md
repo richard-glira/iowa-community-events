@@ -18,7 +18,8 @@ npm run serve
 ```
 
 ## Specs
-- Laravel 5.8
+- PHP 7.0
+- Laravel ~9.0 
 - Laravel Passport (Password Grant Client)
 - Vue
 - Vuex
