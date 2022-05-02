@@ -7,7 +7,7 @@ Laravel/Vue SPA web application to create community events
 ```bash 
 composer install
 ```
-### To get a beautiful website follow the instruction below 👇
+### To run this beautiful frontend follow the instructions below 👇
 
 - Cd into the `frontend/` directory and run the following commands
 
