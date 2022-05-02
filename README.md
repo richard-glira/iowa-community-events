@@ -9,7 +9,7 @@ composer install
 ```
 ### To run this beautiful frontend follow the instructions below 👇
 
-- Cd into the `frontend/` directory and run the following commands
+- `cd` into the `frontend/` directory and run the following commands
 
 ```bash
 npm install
