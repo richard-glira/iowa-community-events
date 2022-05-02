@@ -4,6 +4,8 @@ Laravel/Vue SPA web application to create community events
 
 ## Installation
 
+- `git clone` the project and navigate to into root directory. After navigating run the following command below...
+
 ```bash 
 composer install
 ```
