@@ -7,7 +7,7 @@ Laravel/Vue SPA web application to create community events
 ```bash 
 composer install
 ```
-### Set up frontend
+### To get a beautiful website follow the instruction below 👇
 
 - Cd into the `frontend/` directory and run the following commands
 
@@ -17,7 +17,7 @@ npm install
 npm run serve
 ```
 
-## Specs
+## What makes up this beautiful app??
 - PHP 7.0
 - Laravel ~9.0 
 - Laravel Passport (Password Grant Client)
